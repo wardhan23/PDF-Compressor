@@ -1,0 +1,38 @@
+import argparse
+import os
+import shutil
+import subprocess
+
+
+_doc_ = """
+Your documentation goes here. This will be displayed when the user runs the script with the -h or --help option.
+"""
+
+
+def compress(input_file_path, output_file_path, quality):
+    # Define quality options
+    quality_options = {
+        0: "/default",
+        1: "/screen",
+        2: "/ebook",
+        3: "/printer",
+        4: "/prepress",
+    }
+
+
+    # Set initial and final sizes
+    initial_size = os.path.getsize(input_file_path)
+    final_size = 0
+
+
+    # Call Ghostscript to compress PDF
+    gs_path = get_ghostscript_path()
+    subprocess.call(
+        [
+            gs_path,
+            "-dNOPAUSE",
+            "-dBATCH",
+            "-dQUIET",
+            "-dSAFER",
+            "-sDEVICE=pdfwrite",
+            "-dCompatibilityLevel=1.4",
